@@ -4,7 +4,7 @@ const humanize = (sec) => { return require('humanize-duration')(sec, { round: tr
 
 module.exports = (srcPath, bundlePath) => {
   const B = require(srcPath + 'Broadcast');
-  const CommandParser = require(srcPath + 'CommandParser').CommandParser;
+  const CommandParser = require('@bundles/bundle-example-lib/lib/CommandParser').CommandParser;
   const Item          = require(srcPath + 'Item');
   const ItemType      = require(srcPath + 'ItemType');
   const Logger        = require(srcPath + 'Logger');
