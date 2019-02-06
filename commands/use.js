@@ -8,8 +8,8 @@ const humanize = (sec) => { return require('humanize-duration')(sec, { round: tr
 module.exports = (srcPath, bundlePath) => {
   const Broadcast = require(srcPath + 'Broadcast');
   const Logger = require(srcPath + 'Logger');
-  const { CommandParser } = require('@bundles/bundle-example-lib/lib/CommandParser');
-  const ItemUtil = require('@bundles/myelin-lib/lib/ItemUtil');
+  const { CommandParser } = require('bundles/bundle-example-lib/lib/CommandParser');
+  const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
   const SkillErrors = require(srcPath + 'SkillErrors');
 
   return {

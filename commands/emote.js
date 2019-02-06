@@ -2,7 +2,7 @@
 
 module.exports = (srcPath) => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const Parser = require('@bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
 
   return {
     usage: 'emote <message>',

@@ -1,8 +1,8 @@
 'use strict';
 
-const sprintf = require('sprintf-js').sprintf;
-const Combat = require('../../myelin-combat/lib/Combat');
-const ItemUtil = require('../../myelin-lib/lib/ItemUtil');
+
+const Combat = require('bundles/myelin-combat/lib/Combat');
+const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
 module.exports = (srcPath) => {
   const B = require(srcPath + 'Broadcast');

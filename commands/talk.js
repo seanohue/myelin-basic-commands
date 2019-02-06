@@ -2,7 +2,7 @@
 
 module.exports = (srcPath) => {
   const B = require(srcPath + 'Broadcast');
-  const Parser = require('@bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
   const ItemType = require(srcPath + 'ItemType');
   const Logger = require(srcPath + 'Logger');
 

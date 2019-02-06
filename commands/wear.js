@@ -2,9 +2,9 @@
 
 module.exports = (srcPath, bundlePath) => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const { CommandParser: Parser } = require('@bundles/bundle-example-lib/lib/CommandParser');
+  const { CommandParser: Parser } = require('bundles/bundle-example-lib/lib/CommandParser');
   const { EquipSlotTakenError } = require(srcPath + 'EquipErrors');
-  const ItemUtil = require('@bundles/myelin-lib/lib/ItemUtil');
+  const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
   const Logger = require(srcPath + 'Logger');
   const say = Broadcast.sayAt;
 

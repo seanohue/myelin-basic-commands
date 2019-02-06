@@ -2,7 +2,7 @@
 
 module.exports = (srcPath, bundlePath) => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const ItemUtil = require('@bundles/myelin-lib/lib/ItemUtil');
+  const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
   return {
     usage: 'inventory',

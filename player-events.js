@@ -1,6 +1,6 @@
 'use strict';
 
-const ItemUtil = require('@bundles/myelin-lib/lib/ItemUtil');
+const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
 module.exports = (srcPath) => {
   return  {

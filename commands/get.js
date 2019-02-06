@@ -2,9 +2,9 @@
 
 module.exports = (srcPath, bundlePath) => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const Parser = require('@bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
   const ItemType = require(srcPath + 'ItemType');
-  const ItemUtil = require('@bundles/myelin-lib/lib/ItemUtil');
+  const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
   return {
     usage: 'get <item> [container]',
