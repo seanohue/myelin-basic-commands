@@ -1,6 +1,7 @@
 'use strict';
 
 const humanize = (sec) => { return require('humanize-duration')(sec, { round: true }); };
+const {sprintf} = require('sprintf-js');
 
 module.exports = (srcPath, bundlePath) => {
   const B = require(srcPath + 'Broadcast');
@@ -30,7 +31,133 @@ module.exports = (srcPath, bundlePath) => {
 
   function lookRoom(player) {
     const room = player.room;
-    room.emit('look', player);
+    B.sayAt(player, '<yellow><b>' + sprintf('%-65s', room.title) + '</b></yellow>');
+    B.sayAt(player, B.line(60));
+
+    if (!player.getMeta('config.brief')) {
+      B.sayAt(player, room.description, 80);
+    }
+
+    if (player.getMeta('config.minimap')) {
+      B.sayAt(player, '');
+      state.CommandManager.get('map').execute(4, player);
+    }
+
+    B.sayAt(player, '');
+
+    // show all players
+    room.players.forEach(otherPlayer => {
+      if (otherPlayer === player) {
+        return;
+      }
+      let combatantsDisplay = '';
+      if (otherPlayer.isInCombat()) {
+        combatantsDisplay = getCombatantsDisplay(otherPlayer);
+      }
+      B.sayAt(player, '[Player] ' + otherPlayer.name + combatantsDisplay);
+    });
+
+    // show all the items in the rom
+    room.items.forEach(item => {
+      if (item.metadata.detail) return;
+      ItemUtil.renderItemRoomDesc(item, player);
+    });
+
+    // show all npcs
+    room.npcs.forEach(npc => {
+      // show quest state as [!], [%], [?] for available, in progress, ready to complete respectively
+      let hasNewQuest, hasActiveQuest, hasReadyQuest;
+      if (npc.quests) {
+        const quests = npc.quests.map(qid => state.QuestFactory.create(state, qid, player));
+        hasNewQuest = quests.find(quest => player.questTracker.canStart(quest));
+        hasReadyQuest = quests.find(quest => {
+          return player.questTracker.isActive(quest.id) && player.questTracker.get(quest.id).getProgress().percent >= 100;
+        });
+        hasActiveQuest = quests.find(quest => {
+          return player.questTracker.isActive(quest.id) && player.questTracker.get(quest.id).getProgress().percent < 100;
+        });
+
+        let questString = '';
+        if (hasNewQuest || hasActiveQuest || hasReadyQuest) {
+          questString += hasNewQuest ? '[<b><yellow>!</yellow></b>]' : '';
+          questString += hasActiveQuest ? '[<b><yellow>%</yellow></b>]' : '';
+          questString += hasReadyQuest ? '[<b><yellow>?</yellow></b>]' : '';
+          B.at(player, questString + ' ');
+        }
+      } // could also represent in websocket GUI
+
+      let combatantsDisplay = '';
+      if (npc.isInCombat()) {
+        combatantsDisplay = getCombatantsDisplay(npc);
+      }
+
+      // color NPC label by difficulty
+      let npcLabel = getNpcLevel(player, npc);
+
+      function getNpcLevel(player, npc) {
+        switch (true) {
+          case (player.level - npc.level > 4): return '<cyan>NPC</cyan>';
+          case (npc.level - player.level > 9): return '<b><black>NPC</black></b>';
+          case (npc.level - player.level > 5): return '<red>NPC</red>';
+          case (npc.level - player.level > 3): return '<yellow>NPC</red>';
+          default: return '<green>NPC</green>';
+        }
+      }
+
+      B.sayAt(player, `[${npcLabel}] ` + npc.name + combatantsDisplay);
+    });
+
+    B.at(player, '[<yellow><b>Exits</yellow></b>: ');
+      // find explicitly defined exits
+      let foundExits = Array.from(room.exits).map(ex => {
+        return [ex.direction, state.RoomManager.getRoom(ex.roomId)];
+      });
+
+      // infer from coordinates
+      if (room.coordinates) {
+        const coords = room.coordinates;
+        const area = room.area;
+        const directions = {
+          north: [0, 1, 0],
+          south: [0, -1, 0],
+          east: [1, 0, 0],
+          west: [-1, 0, 0],
+          up: [0, 0, 1],
+          down: [0, 0, -1],
+        };
+
+        foundExits = [...foundExits, ...(Object.entries(directions)
+          .map(([dir, diff]) => {
+            const [x, y, z] = diff;
+            return [dir, area.getRoomAtCoordinates(
+              coords.x + x, 
+              coords.y + y, 
+              coords.z + z
+            )];
+          })
+          .filter(([dir, exitRoom]) => {
+            return !!exitRoom;
+          })
+        )];
+      }
+
+      B.at(player, foundExits.map(([dir, exitRoom]) => {
+        const door = room.getDoor(exitRoom) || exitRoom.getDoor(room);
+        if (door && (door.locked || door.closed)) {
+          return '(' + dir + ')';
+        }
+
+        return dir;
+      }).join(' '));
+
+      if (!foundExits.length) {
+        B.at(player, 'none');
+      }
+      B.sayAt(player, ']');
+
+      if (player.getMeta('config.autoscan')) {
+        state.CommandManager.get('scan').execute('', player);
+      }
   }
 
   function lookEntity(state, player, args) {
@@ -126,3 +253,8 @@ module.exports = (srcPath, bundlePath) => {
     entity.emit('look', player);
   }
 };
+
+function getCombatantsDisplay(entity) {
+  const combatantsList = [...entity.combatants.values()].map(combatant => combatant.name);
+  return `, <red>fighting </red>${combatantsList.join("<red>,</red> ")}`;
+}
