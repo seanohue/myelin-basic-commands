@@ -2,7 +2,7 @@
 
 module.exports = (srcPath, bundlePath) => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
   const ItemType = require(srcPath + 'ItemType');
   const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
@@ -42,7 +42,7 @@ module.exports = (srcPath, bundlePath) => {
       } else {
       //Newest containers should go first, so that if you type get all corpse you get from the 
       // most recent corpse. See issue #247.
-        container = Parser.parseDot(parts[1], [...player.room.items].reverse());
+        container = ArgParser.parseDot(parts[1], [...player.room.items].reverse());
         if (!container) {
           return Broadcast.sayAt(player, "You don't see anything like that here.");
         }
@@ -80,7 +80,7 @@ module.exports = (srcPath, bundlePath) => {
         return;
       }
 
-      const item = Parser.parseDot(search, source);
+      const item = ArgParser.parseDot(search, source);
       if (!item) {
         return Broadcast.sayAt(player, "You don't see anything like that here.");
       }

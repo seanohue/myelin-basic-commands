@@ -2,7 +2,7 @@
 
 module.exports = srcPath => {
   const B = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
 
   return {
     usage: 'read <readable> [page/section]',
@@ -14,8 +14,8 @@ module.exports = srcPath => {
       const [targetName, ...restArgs] = args.split(' ');
 
       const target = 
-        Parser.parseDot(targetName, player.room.items) ||
-        Parser.parseDot(targetName, player.inventory);
+        ArgParser.parseDot(targetName, player.room.items) ||
+        ArgParser.parseDot(targetName, player.inventory);
 
       if (!target) {
         return B.sayAt(player, 'That isn\'t here.');

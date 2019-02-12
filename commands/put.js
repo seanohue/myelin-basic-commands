@@ -2,7 +2,7 @@
 
 module.exports = (srcPath, bundlePath) => {
   const B = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
   const ItemType = require(srcPath + 'ItemType');
   const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
@@ -25,10 +25,10 @@ module.exports = (srcPath, bundlePath) => {
       const fromList = player.inventory;
       const fromArg = parts[0];
       const toArg = parts[1];
-      const item = Parser.parseDot(fromArg, fromList);
-      const toContainer = Parser.parseDot(toArg, player.room.items) ||
-                          Parser.parseDot(toArg, player.inventory) ||
-                          Parser.parseDot(toArg, player.equipment);
+      const item = ArgParser.parseDot(fromArg, fromList);
+      const toContainer = ArgParser.parseDot(toArg, player.room.items) ||
+                          ArgParser.parseDot(toArg, player.inventory) ||
+                          ArgParser.parseDot(toArg, player.equipment);
 
       if (!item) {
         return B.sayAt(player, "You don't have that item.");

@@ -8,7 +8,7 @@ const humanize = (sec) => { return require('humanize-duration')(sec, { round: tr
 module.exports = (srcPath, bundlePath) => {
   const Broadcast = require(srcPath + 'Broadcast');
   const Logger = require(srcPath + 'Logger');
-  const { CommandParser } = require('bundles/bundle-example-lib/lib/CommandParser');
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
   const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
   const SkillErrors = require(srcPath + 'SkillErrors');
 
@@ -22,7 +22,7 @@ module.exports = (srcPath, bundlePath) => {
         return say("Use what?");
       }
 
-      const item = CommandParser.parseDot(args, player.inventory);
+      const item = ArgParser.parseDot(args, player.inventory);
 
       if (!item) {
         return say("You don't have anything like that.");

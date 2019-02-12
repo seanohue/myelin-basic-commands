@@ -2,7 +2,7 @@
 
 module.exports = (srcPath, bundlePath) => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
   const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
   return {
@@ -18,7 +18,7 @@ module.exports = (srcPath, bundlePath) => {
         return Broadcast.sayAt(player, 'You are floating in the nether, it would disappear forever.');
       }
 
-      const item = Parser.parseDot(args, player.inventory);
+      const item = ArgParser.parseDot(args, player.inventory);
 
       if (!item) {
         return Broadcast.sayAt(player, "You aren't carrying anything like that.");

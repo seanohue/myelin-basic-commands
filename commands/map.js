@@ -57,7 +57,9 @@ module.exports = srcPath => {
             } else {
               map += '.';
             }
-            roomData.glyph = thisRoom.metadata.glyph || thisRoom.area.info.glyph
+            roomData.glyph = thisRoom.metadata.glyph 
+              || (thisRoom.area.info && thisRoom.area.info.glyph)
+              || '.';
             mapData.push(roomData);
           } else {
             map += ' ';

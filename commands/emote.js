@@ -2,7 +2,7 @@
 
 module.exports = (srcPath) => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
 
   return {
     usage: 'emote <message>',
@@ -47,6 +47,6 @@ module.exports = (srcPath) => {
 
   function findTarget(player, thingName) {
     const findableThings = new Set([...player.room.players, ...player.equipment, ...player.room.npcs, ...player.room.items]);
-    return Parser.parseDot(thingName, findableThings);
+    return ArgParser.parseDot(thingName, findableThings);
   }
 };

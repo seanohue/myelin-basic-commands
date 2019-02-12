@@ -21,7 +21,7 @@ module.exports = (srcPath, bundlePath) => {
         return;
       }
 
-      const result = Parser.parseDot(arg, player.equipment, true);
+      const result = ArgParser.parseDot(arg, player.equipment, true);
       if (!result) {
         return Broadcast.sayAt(player, "You aren't wearing anything like that.");
       }

@@ -2,9 +2,7 @@
 
 module.exports = (srcPath) => {
   const B = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
-  const ItemType = require(srcPath + 'ItemType');
-  const Logger = require(srcPath + 'Logger');
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
 
   return {
     aliases: ['ask', 'greet'],
@@ -45,7 +43,7 @@ module.exports = (srcPath) => {
         message += '?';
       }
 
-      const npc = Parser.parseDot(npcSearch, player.room.npcs);
+      const npc = ArgParser.parseDot(npcSearch, player.room.npcs);
       if (!npc) {
         return B.sayAt(player, "You don't see them here.");
       }

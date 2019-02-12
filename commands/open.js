@@ -2,7 +2,7 @@
 
 module.exports = (srcPath, bundlePath) => {
   const B = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
   const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
   return {
@@ -139,8 +139,8 @@ module.exports = (srcPath, bundlePath) => {
       }
 
       // otherwise trying to open an item
-      let item = Parser.parseDot(args, player.inventory);
-      item = item || Parser.parseDot(args, player.room.items);
+      let item = ArgParser.parseDot(args, player.inventory);
+      item = item || ArgParser.parseDot(args, player.room.items);
 
       if (item) {
         validTarget = true;

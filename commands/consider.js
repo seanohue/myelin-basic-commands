@@ -2,7 +2,7 @@
 
 module.exports = srcPath => {
   const Broadcast = require(srcPath + 'Broadcast');
-  const Parser = require('bundles/bundle-example-lib/lib/CommandParser').CommandParser;
+  const ArgParser = require('bundles/bundle-example-lib/lib/ArgParser');
 
   return {
     usage: 'consider <character name>',
@@ -14,7 +14,7 @@ module.exports = srcPath => {
         return Broadcast.sayAt(player, '<b><yellow>You are in a hollow void, with nothing and no one to consider.</yellow></b>');
       }
 
-      const npc = Parser.parseDot(args, player.room.npcs);
+      const npc = ArgParser.parseDot(args, player.room.npcs);
       if (!npc) {
         return Broadcast.sayAt(player, "You don't see them here.");
       }
