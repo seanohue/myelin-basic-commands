@@ -11,7 +11,7 @@ module.exports = srcPath => {
 
       let size = Math.min(
         Math.max(
-          3, 
+          3,
           Math.ceil(player.getMaxAttribute('intellect') / 5)
         ),
         8
@@ -35,7 +35,7 @@ module.exports = srcPath => {
         for (var x = coords.x - xSize; x <= coords.x + xSize; x++) {
           // To send via socket:
           // {player: boolean, hasUp: boolean, hasDown: boolean}
-          const roomData = {}; 
+          const roomData = {};
           roomData.x = x;
           roomData.y = y;
           const thisRoom = room.area.getRoomAtCoordinates(x, y, coords.z);
@@ -57,9 +57,9 @@ module.exports = srcPath => {
             } else {
               map += '.';
             }
-            roomData.glyph = thisRoom.metadata.glyph 
+            roomData.glyph = thisRoom.metadata.glyph
               || (thisRoom.area.info && thisRoom.area.info.glyph)
-              || '.';
+              || 'default';
             mapData.push(roomData);
           } else {
             map += ' ';
@@ -70,7 +70,9 @@ module.exports = srcPath => {
       }
 
       map += "'" + ('-'.repeat(xSize * 2 + 1)) + "'";
-      player.socket.command('sendData', 'map', {mapData, size, areaName: player.room.area.title});
+
+      console.log(JSON.stringify({mapData, size}, null, 2));
+      player.socket.command('sendData', 'map', {mapData, size, areaName: player.room.area.title, exits: player.room.exits});
       B.sayAt(player, map);
     }
   };

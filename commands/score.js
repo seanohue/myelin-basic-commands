@@ -6,6 +6,7 @@ const ItemUtil = require('bundles/myelin-lib/lib/ItemUtil');
 
 module.exports = (srcPath) => {
   const B = require(srcPath + 'Broadcast');
+  B.box = () => '';
 
   return {
     aliases: [ 'stats', 'character', 'status' ],
